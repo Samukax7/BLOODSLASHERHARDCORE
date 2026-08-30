@@ -1,0 +1,13 @@
+# Godot-generated cache
+.godot/
+
+# Local exports
+export/web/*
+!export/web/.gitkeep
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.tmp
+*.TMP
+

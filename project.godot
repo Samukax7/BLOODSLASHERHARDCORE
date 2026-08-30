@@ -1,0 +1,70 @@
+; Engine configuration file.
+; BLOOD SLASHER HARDCORE — Demo Web
+
+config_version=5
+
+[application]
+
+config/name="BLOOD SLASHER HARDCORE"
+config/description="Hack and slash 2D de hordas — Demo Web"
+config/version="0.1.0"
+run/main_scene="res://scenes/boot/boot.tscn"
+
+[autoload]
+
+GameState="*res://scripts/autoload/game_state.gd"
+SceneRouter="*res://scripts/autoload/scene_router.gd"
+AudioManager="*res://scripts/autoload/audio_manager.gd"
+SaveManager="*res://scripts/autoload/save_manager.gd"
+
+[display]
+
+window/size/viewport_width=640
+window/size/viewport_height=360
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+textures/canvas_textures/default_texture_filter=0
+
+[input]
+
+move_left={
+"deadzone": 0.3,
+"events": [Object(InputEventKey,"physical_keycode":65), Object(InputEventKey,"physical_keycode":4194311), Object(InputEventJoypadMotion,"axis":0,"axis_value":-1.0)]
+}
+move_right={
+"deadzone": 0.3,
+"events": [Object(InputEventKey,"physical_keycode":68), Object(InputEventKey,"physical_keycode":4194313), Object(InputEventJoypadMotion,"axis":0,"axis_value":1.0)]
+}
+jump={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":32), Object(InputEventJoypadButton,"button_index":0)]
+}
+attack_light={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":74), Object(InputEventJoypadButton,"button_index":2)]
+}
+attack_heavy={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":75), Object(InputEventJoypadButton,"button_index":3)]
+}
+dash={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":4194325), Object(InputEventKey,"physical_keycode":76), Object(InputEventJoypadButton,"button_index":10)]
+}
+rage={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":82), Object(InputEventJoypadButton,"button_index":1)]
+}
+pause={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":4194305), Object(InputEventJoypadButton,"button_index":6)]
+}
+
