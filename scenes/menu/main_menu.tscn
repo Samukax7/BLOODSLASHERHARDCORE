@@ -69,7 +69,12 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
-text = "INICIAR"
+text = "JOGAR"
+
+[node name="ControlsButton" type="Button" parent="Content"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+text = "CONTROLES"
 
 [node name="OptionsButton" type="Button" parent="Content"]
 custom_minimum_size = Vector2(0, 32)
@@ -108,6 +113,6 @@ text = "DEMO WEB 0.1"
 horizontal_alignment = 2
 
 [connection signal="pressed" from="Content/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Content/ControlsButton" to="." method="_on_controls_button_pressed"]
 [connection signal="pressed" from="Content/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="Content/CreditsButton" to="." method="_on_credits_button_pressed"]
-

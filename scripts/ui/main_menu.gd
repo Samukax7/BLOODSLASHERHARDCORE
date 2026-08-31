@@ -13,7 +13,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_start_button_pressed() -> void:
 	AudioManager.unlock_audio()
-	%StatusLabel.text = "INTRO CHEGA NO MILESTONE 1"
+	SceneRouter.go_to_intro()
+
+
+func _on_controls_button_pressed() -> void:
+	AudioManager.unlock_audio()
+	%StatusLabel.text = "A/D MOVER  •  ESPAÇO SALTAR  •  J/K ATACAR  •  SHIFT ESQUIVAR  •  R FÚRIA"
 
 
 func _on_options_button_pressed() -> void:
@@ -24,4 +29,3 @@ func _on_options_button_pressed() -> void:
 func _on_credits_button_pressed() -> void:
 	AudioManager.unlock_audio()
 	%StatusLabel.text = "CRIADO POR SAMUKAX7"
-

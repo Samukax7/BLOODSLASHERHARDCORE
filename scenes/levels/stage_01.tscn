@@ -1,0 +1,73 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/stage_01_placeholder.gd" id="1_stage"]
+
+[node name="Stage01" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_stage")
+
+[node name="Sky" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 0.025, 0.035, 1)
+
+[node name="Road" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(0, 235, 640, 190, 640, 360, 0, 360)
+color = Color(0.07, 0.065, 0.07, 1)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 24.0
+offset_bottom = 80.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 25
+text = "STAGE 01 — RODOVIA DOS CONDENADOS"
+horizontal_alignment = 1
+
+[node name="Placeholder" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -48.0
+offset_right = 230.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9, 0.72, 0.65, 1)
+theme_override_font_sizes/font_size = 17
+text = "ARENA EM CONSTRUÇÃO\n\nO combate desperta no Milestone 2."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FinishButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 190.0
+offset_top = -60.0
+offset_right = -190.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "CONCLUIR PLACEHOLDER"
+
+[connection signal="pressed" from="FinishButton" to="." method="_on_finish_button_pressed"]
+

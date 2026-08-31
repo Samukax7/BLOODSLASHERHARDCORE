@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/collaborator_cta.gd" id="1_cta"]
+
+[node name="CollaboratorCTA" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cta")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.055, 0.008, 0.012, 1)
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -145.0
+offset_right = 250.0
+offset_bottom = 145.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 11
+alignment = 1
+
+[node name="Title" type="Label" parent="Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.07, 0.08, 1)
+theme_override_font_sizes/font_size = 24
+text = "AINDA RESTAM ONZE FASES DO INFERNO."
+horizontal_alignment = 1
+
+[node name="Message" type="Label" parent="Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.82, 0.78, 1)
+theme_override_font_sizes/font_size = 15
+text = "O reino demoníaco está em construção.\n\nProcuramos artistas de pixel art, animadores, programadores Godot,\nmúsicos de metal e vozes.\n\nAJUDE A TERMINAR A CARNIFICINA."
+horizontal_alignment = 1
+
+[node name="ProjectButton" type="Button" parent="Content"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+text = "CONHEÇA O PROJETO"
+
+[node name="ReplayButton" type="Button" parent="Content"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+text = "JOGAR NOVAMENTE"
+
+[node name="MenuButton" type="Button" parent="Content"]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+text = "MENU PRINCIPAL"
+
+[connection signal="pressed" from="Content/ProjectButton" to="." method="_on_project_button_pressed"]
+[connection signal="pressed" from="Content/ReplayButton" to="." method="_on_replay_button_pressed"]
+[connection signal="pressed" from="Content/MenuButton" to="." method="_on_menu_button_pressed"]
