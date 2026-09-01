@@ -1,6 +1,6 @@
 extends Control
 
-const PROJECT_URL := "https://github.com/Samukax7/BLOODSLASHERHARDCORE"
+const PROJECT_URL := "https://samukax7.github.io/BLOODSLASHERHARDCORE/"
 
 
 func _ready() -> void:
