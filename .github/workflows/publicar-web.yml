@@ -28,6 +28,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Instalar templates Web da Godot
+        run: |
+          export_template_dir="/github/home/.local/share/godot/export_templates/4.4.stable"
+          mkdir -p "$export_template_dir" /tmp/godot-templates
+          wget -q "https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_export_templates.tpz" -O /tmp/godot-templates.tpz
+          unzip -q /tmp/godot-templates.tpz -d /tmp/godot-templates
+          cp /tmp/godot-templates/templates/* "$export_template_dir/"
+
       - name: Exportar Web
         run: |
           cd project
