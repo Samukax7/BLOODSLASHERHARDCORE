@@ -31,17 +31,17 @@ jobs:
       - name: Exportar Web
         run: |
           cd project
-          mkdir -p export/web
+          mkdir -p export/web /tmp/blood-slasher-web
           godot --headless --export-release "Web" export/web/index.html
+          cp -R export/web/. /tmp/blood-slasher-web/
 
       - name: Atualizar site de teste
         run: |
           cd project
           git fetch origin gh-pages || true
           git checkout --orphan gh-pages
-          git reset --hard
           git clean -fdx
-          cp -R export/web/. .
+          cp -R /tmp/blood-slasher-web/. .
           touch .nojekyll
           git add --all
           git commit -m "Atualizar teste Web" || exit 0
