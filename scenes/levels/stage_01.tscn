@@ -67,8 +67,8 @@ scale = Vector2(0.82, 0.82)
 
 [node name="ImpSpawn" type="AnimatedSprite2D" parent="Actors"]
 unique_name_in_owner = true
-position = Vector2(366, 286)
-scale = Vector2(0.74, 0.74)
+position = Vector2(366, 240)
+scale = Vector2(0.64, 0.64)
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
@@ -135,4 +135,53 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "RESULTADO"
 
+[node name="TouchControls" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -76.0
+offset_right = -16.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="MoveLeftButton" type="Button" parent="TouchControls"]
+custom_minimum_size = Vector2(58, 54)
+layout_mode = 0
+offset_right = 58.0
+offset_bottom = 54.0
+theme_override_font_sizes/font_size = 24
+text = "←"
+
+[node name="MoveRightButton" type="Button" parent="TouchControls"]
+custom_minimum_size = Vector2(58, 54)
+layout_mode = 0
+offset_left = 64.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_font_sizes/font_size = 24
+text = "→"
+
+[node name="AttackButton" type="Button" parent="TouchControls"]
+custom_minimum_size = Vector2(104, 54)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -104.0
+offset_bottom = 54.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 0.82, 0.72, 1)
+theme_override_font_sizes/font_size = 14
+text = "ATAQUE"
+
 [connection signal="pressed" from="FinishButton" to="." method="_on_finish_button_pressed"]
+[connection signal="button_down" from="TouchControls/MoveLeftButton" to="." method="_on_move_left_button_down"]
+[connection signal="button_up" from="TouchControls/MoveLeftButton" to="." method="_on_move_left_button_up"]
+[connection signal="button_down" from="TouchControls/MoveRightButton" to="." method="_on_move_right_button_down"]
+[connection signal="button_up" from="TouchControls/MoveRightButton" to="." method="_on_move_right_button_up"]
+[connection signal="button_down" from="TouchControls/AttackButton" to="." method="_on_attack_button_down"]
