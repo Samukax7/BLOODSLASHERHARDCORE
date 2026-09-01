@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
 [ext_resource type="Texture2D" path="res://assets/sprites/menu/fundo menu.png" id="2_bg"]
 [ext_resource type="Texture2D" path="res://assets/sprites/menu/silhueta_menu_spritesheet.png" id="3_silhouette"]
 [ext_resource type="Texture2D" path="res://assets/sprites/menu/logo.png" id="4_logo"]
 [ext_resource type="Texture2D" path="res://assets/sprites/menu/hardcore_subtitulo.png" id="5_subtitle"]
+[ext_resource type="Texture2D" path="res://assets/sprites/menu_reference.png" id="6_menu_concept"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -31,11 +32,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_bg")
+texture = ExtResource("6_menu_concept")
 expand_mode = 1
 stretch_mode = 6
 
 [node name="Silhouette" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -56,7 +58,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.38)
+color = Color(0, 0, 0, 0.12)
 
 [node name="RedGlow" type="ColorRect" parent="."]
 layout_mode = 1
@@ -70,6 +72,7 @@ grow_vertical = 0
 color = Color(0.28, 0.015, 0.02, 1)
 
 [node name="Logo" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -87,6 +90,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="HardcoreSubtitle" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -111,9 +115,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -164.0
-offset_top = 24.0
+offset_top = 154.0
 offset_right = 164.0
-offset_bottom = 170.0
+offset_bottom = 316.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 7
@@ -143,21 +147,27 @@ layout_mode = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.82, 0.72, 1)
+theme_override_colors/font_focus_color = Color(1, 0.93, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.93, 0.82, 1)
 text = "JOGAR"
 
 [node name="ControlsButton" type="Button" parent="Content"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.82, 0.72, 1)
 text = "CONTROLES"
 
 [node name="OptionsButton" type="Button" parent="Content"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.82, 0.72, 1)
 text = "OPÇÕES"
 
 [node name="CreditsButton" type="Button" parent="Content"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.82, 0.72, 1)
 text = "CRÉDITOS"
 
 [node name="StatusLabel" type="Label" parent="Content"]

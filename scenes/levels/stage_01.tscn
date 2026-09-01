@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/stage_01_placeholder.gd" id="1_stage"]
 [ext_resource type="Texture2D" path="res://assets/sprites/background/fundo_ceu.png" id="2_sky"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" path="res://assets/sprites/Chris/run/spritesheet run.png" id="6_chris_run"]
 [ext_resource type="Texture2D" path="res://assets/sprites/Chris/atack basico/atack basico spritesheet.png" id="7_chris_attack"]
 [ext_resource type="Texture2D" path="res://assets/sprites/enemy/demonio vermelho/imp_spawn_spritesheet.png" id="8_imp_spawn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background completo.png" id="9_stage_concept"]
 
 [node name="Stage01" type="Control"]
 layout_mode = 3
@@ -25,11 +26,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_sky")
+texture = ExtResource("9_stage_concept")
 expand_mode = 1
 stretch_mode = 6
 
 [node name="MidParallax" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_right = 1.0
@@ -43,6 +45,7 @@ expand_mode = 1
 stretch_mode = 6
 
 [node name="Ground" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_right = 1.0
@@ -59,13 +62,13 @@ stretch_mode = 6
 
 [node name="Chris" type="AnimatedSprite2D" parent="Actors"]
 unique_name_in_owner = true
-position = Vector2(205, 247)
-scale = Vector2(1.35, 1.35)
+position = Vector2(152, 285)
+scale = Vector2(0.82, 0.82)
 
 [node name="ImpSpawn" type="AnimatedSprite2D" parent="Actors"]
 unique_name_in_owner = true
-position = Vector2(438, 247)
-scale = Vector2(1.25, 1.25)
+position = Vector2(366, 286)
+scale = Vector2(0.74, 0.74)
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
@@ -74,7 +77,11 @@ anchor_right = 1.0
 offset_top = 24.0
 offset_bottom = 80.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 25
+theme_override_colors/font_color = Color(0.95, 0.84, 0.72, 0.88)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.86)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
 text = "STAGE 01 — RODOVIA DOS CONDENADOS"
 horizontal_alignment = 1
 

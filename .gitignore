@@ -11,4 +11,5 @@ Thumbs.db
 *.tmp
 *.TMP
 *.png~
+*.jpg~
 assets/sprites/Chris/idle/idle_0*.png.import
