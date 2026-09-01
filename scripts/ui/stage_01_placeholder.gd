@@ -1,20 +1,28 @@
 extends Control
 
 const CHRIS_IDLE := preload("res://assets/sprites/Chris/idle/idle_spritesheet.png")
+const CHRIS_ENTRY := preload("res://assets/sprites/Chris/intro/chris_entry_10f_style_locked_v4_preview.png")
 const CHRIS_RUN := preload("res://assets/sprites/Chris/run/spritesheet run.png")
 const CHRIS_ATTACK := preload("res://assets/sprites/Chris/atack basico/atack basico spritesheet.png")
 const IMP_SPAWN := preload("res://assets/sprites/enemy/demonio vermelho/imp_spawn_spritesheet.png")
 
 const CHRIS_FRAME := Vector2i(126, 126)
-const IMP_FRAME := Vector2i(128, 128)
+const CHRIS_ENTRY_FRAME := Vector2i(87, 112)
+const CHRIS_ATTACK_FRAME := Vector2i(252, 126)
+# A folha de spawn veio em oito colunas de 192 px, com bastante espaço vertical.
+# Usar a célula inteira preserva a posição de cada pose e evita ler a faixa vazia no topo.
+const IMP_SPAWN_FRAME := Vector2i(192, 1024)
+const IMP_IDLE_FRAME := Vector2i(128, 128)
 const PLAYER_SPEED := 115.0
 const PLAYER_MIN_X := 64.0
 const PLAYER_MAX_X := 565.0
-const ATTACK_DURATION := 16.0 / 18.0
+const ATTACK_DURATION := 8.0 / 12.0
 
 var is_attacking := false
 var current_chris_animation := &"idle"
 var attack_timer := 0.0
+var touch_direction := 0.0
+var is_entering := true
 
 
 func _ready() -> void:
@@ -29,7 +37,8 @@ func _process(delta: float) -> void:
 		attack_timer -= delta
 		if attack_timer <= 0.0:
 			_finish_attack_test()
-	_update_player_test(delta)
+	if not is_entering:
+		_update_player_test(delta)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -53,17 +62,18 @@ func _on_finish_button_pressed() -> void:
 
 func _setup_chris() -> void:
 	var frames := SpriteFrames.new()
-	_add_animation(frames, "idle", CHRIS_IDLE, CHRIS_FRAME, 5, 7.0, true)
+	_add_animation(frames, "entry", CHRIS_ENTRY, CHRIS_ENTRY_FRAME, 10, 10.0, false)
+	_add_animation(frames, "idle", CHRIS_IDLE, CHRIS_FRAME, 6, 7.0, true)
 	_add_animation(frames, "run", CHRIS_RUN, CHRIS_FRAME, 8, 10.0, true)
-	_add_animation(frames, "attack", CHRIS_ATTACK, CHRIS_FRAME, 16, 18.0, false)
+	_add_animation(frames, "attack", CHRIS_ATTACK, CHRIS_ATTACK_FRAME, 8, 12.0, false)
 	%Chris.sprite_frames = frames
 	%Chris.animation_finished.connect(_on_chris_animation_finished)
-	_play_chris(&"idle")
+	_play_chris(&"entry")
 
 
 func _setup_imp_spawn() -> void:
 	var frames := SpriteFrames.new()
-	_add_animation(frames, "spawn", IMP_SPAWN, IMP_FRAME, 8, 8.0, false)
+	_add_animation(frames, "spawn", IMP_SPAWN, IMP_SPAWN_FRAME, 8, 8.0, false)
 	%ImpSpawn.sprite_frames = frames
 	%ImpSpawn.play("spawn")
 	%ImpSpawn.animation_finished.connect(_on_imp_spawn_finished)
@@ -75,7 +85,7 @@ func _on_imp_spawn_finished() -> void:
 		frames,
 		"idle",
 		preload("res://assets/sprites/enemy/demonio vermelho/imp_idle_spritesheet.png"),
-		IMP_FRAME,
+		IMP_IDLE_FRAME,
 		6,
 		7.0,
 		true
@@ -106,6 +116,8 @@ func _add_animation(
 
 func _update_player_test(delta: float) -> void:
 	var direction := Input.get_axis("move_left", "move_right")
+	if is_zero_approx(direction):
+		direction = touch_direction
 	if not is_zero_approx(direction):
 		%Chris.position.x = clampf(%Chris.position.x + direction * PLAYER_SPEED * delta, PLAYER_MIN_X, PLAYER_MAX_X)
 		%Chris.flip_h = direction < 0.0
@@ -121,7 +133,7 @@ func _update_player_test(delta: float) -> void:
 
 
 func _play_attack_test() -> void:
-	if is_attacking:
+	if is_attacking or is_entering:
 		return
 	is_attacking = true
 	attack_timer = ATTACK_DURATION
@@ -129,7 +141,11 @@ func _play_attack_test() -> void:
 
 
 func _on_chris_animation_finished() -> void:
-	if %Chris.animation == &"attack":
+	if %Chris.animation == &"entry":
+		is_entering = false
+		current_chris_animation = &""
+		_play_chris(&"idle")
+	elif %Chris.animation == &"attack":
 		_finish_attack_test()
 
 
@@ -155,7 +171,29 @@ func _update_gameplay_status() -> void:
 	if is_instance_valid(%ImpSpawn) and %ImpSpawn.sprite_frames:
 		imp_animation = str(%ImpSpawn.animation)
 
-	%GameplayStatus.text = "GAMEPLAY TEST  |  CHRIS: %s  |  IMP: %s\nA/D mover  |  J ataque  |  ESC menu" % [
+	%GameplayStatus.text = "GAMEPLAY TEST  |  CHRIS: %s  |  IMP: %s\nA/D ou botões mover  |  J ou ATAQUE  |  ESC menu" % [
 		str(%Chris.animation).to_upper(),
 		imp_animation.to_upper(),
 	]
+
+
+func _on_move_left_button_down() -> void:
+	touch_direction = -1.0
+
+
+func _on_move_left_button_up() -> void:
+	if touch_direction < 0.0:
+		touch_direction = 0.0
+
+
+func _on_move_right_button_down() -> void:
+	touch_direction = 1.0
+
+
+func _on_move_right_button_up() -> void:
+	if touch_direction > 0.0:
+		touch_direction = 0.0
+
+
+func _on_attack_button_down() -> void:
+	_play_attack_test()
