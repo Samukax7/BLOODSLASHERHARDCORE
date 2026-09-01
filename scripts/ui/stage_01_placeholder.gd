@@ -95,7 +95,7 @@ func _spawn_next(delta: float) -> void:
 	spawn_time -= delta
 	if spawn_time > 0.0 or enemies.size() >= 4:
 		return
-	var enemy_type := ["imp", "pursuer", "collector"][spawn_index % 3]
+	var enemy_type: String = ["imp", "pursuer", "collector"][spawn_index % 3]
 	spawn_index += 1
 	spawn_time = 3.5
 	_spawn_enemy(enemy_type)
