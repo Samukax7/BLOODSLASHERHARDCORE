@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/results.gd" id="1_results"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background/fundo_ceu.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/sprites/blood count_menor.png" id="3_blood"]
 
 [node name="Results" type="Control"]
 layout_mode = 3
@@ -19,6 +21,40 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.025, 0.015, 0.018, 1)
+
+[node name="ResultArt" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="DarkWash" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.62)
+
+[node name="BloodMark" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -146.0
+offset_top = 26.0
+offset_right = 146.0
+offset_bottom = 118.0
+grow_horizontal = 2
+texture = ExtResource("3_blood")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Content" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -117,4 +153,3 @@ layout_mode = 2
 text = "CONTINUAR"
 
 [connection signal="pressed" from="Content/ContinueButton" to="." method="_on_continue_button_pressed"]
-

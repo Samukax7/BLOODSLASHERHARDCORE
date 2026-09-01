@@ -10,4 +10,5 @@ export/web/*
 Thumbs.db
 *.tmp
 *.TMP
-
+*.png~
+assets/sprites/Chris/idle/idle_0*.png.import

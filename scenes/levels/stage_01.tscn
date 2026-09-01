@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/stage_01_placeholder.gd" id="1_stage"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background/fundo_ceu.png" id="2_sky"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background/paralax mid bilds.png" id="3_mid"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background/chão.png" id="4_ground"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Chris/idle/idle_spritesheet.png" id="5_chris_idle"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Chris/run/spritesheet run.png" id="6_chris_run"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Chris/atack basico/atack basico spritesheet.png" id="7_chris_attack"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/demonio vermelho/imp_spawn_spritesheet.png" id="8_imp_spawn"]
 
 [node name="Stage01" type="Control"]
 layout_mode = 3
@@ -11,18 +18,54 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_stage")
 
-[node name="Sky" type="ColorRect" parent="."]
+[node name="Sky" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.12, 0.025, 0.035, 1)
+texture = ExtResource("2_sky")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="Road" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(0, 235, 640, 190, 640, 360, 0, 360)
-color = Color(0.07, 0.065, 0.07, 1)
+[node name="MidParallax" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -250.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("3_mid")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Ground" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -104.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("4_ground")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Actors" type="Node2D" parent="."]
+
+[node name="Chris" type="AnimatedSprite2D" parent="Actors"]
+unique_name_in_owner = true
+position = Vector2(205, 247)
+scale = Vector2(1.35, 1.35)
+
+[node name="ImpSpawn" type="AnimatedSprite2D" parent="Actors"]
+unique_name_in_owner = true
+position = Vector2(438, 247)
+scale = Vector2(1.25, 1.25)
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
@@ -36,6 +79,7 @@ text = "STAGE 01 — RODOVIA DOS CONDENADOS"
 horizontal_alignment = 1
 
 [node name="Placeholder" type="Label" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -70,4 +114,3 @@ grow_vertical = 0
 text = "CONCLUIR PLACEHOLDER"
 
 [connection signal="pressed" from="FinishButton" to="." method="_on_finish_button_pressed"]
-

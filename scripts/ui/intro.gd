@@ -1,12 +1,36 @@
 extends Control
 
 const PANELS := [
-	{"text": "Ele viveu rápido. Brigou mais do que devia.", "color": Color("301419"), "mark": "I"},
-	{"text": "Uma noite, a estrada finalmente cobrou a dívida.", "color": Color("20171a"), "mark": "II"},
-	{"text": "Quando abriu os olhos, o asfalto ainda queimava.\nMas aquele não era mais o seu mundo.", "color": Color("3b1712"), "mark": "III"},
-	{"text": "Disseram que o Inferno seria eterno.", "color": Color("260b0d"), "mark": "IV"},
-	{"text": "Ele ouviu a palavra “eterno”... e sorriu.", "color": Color("450b10"), "mark": "V"},
-	{"text": "Se existe redenção, ela está no fim desta estrada.\nSe não existe, ele destruirá o Inferno tentando.", "color": Color("140608"), "mark": "VI"},
+	{
+		"text": "Ele viveu rápido. Brigou mais do que devia.",
+		"image": preload("res://assets/sprites/intro/Christofoly na Curva da Tempestade.png"),
+		"mark": "I",
+	},
+	{
+		"text": "Uma noite, a estrada finalmente cobrou a dívida.",
+		"image": preload("res://assets/sprites/intro/Impacto da corrente na estrada infernal.png"),
+		"mark": "II",
+	},
+	{
+		"text": "Quando abriu os olhos, o asfalto ainda queimava.\nMas aquele não era mais o seu mundo.",
+		"image": preload("res://assets/sprites/intro/Despertar na estrada infernal.png"),
+		"mark": "III",
+	},
+	{
+		"text": "Disseram que o Inferno seria eterno.",
+		"image": preload("res://assets/sprites/intro/Silêncio após o impacto na curva.png"),
+		"mark": "IV",
+	},
+	{
+		"text": "Ele ouviu a palavra “eterno”... e sorriu.",
+		"image": preload("res://assets/sprites/intro/Chris aprova com um joinha.png"),
+		"mark": "V",
+	},
+	{
+		"text": "Se existe redenção, ela está no fim desta estrada.\nSe não existe, ele destruirá o Inferno tentando.",
+		"image": preload("res://assets/sprites/intro/Christofoly encara a horda demoníaca.png"),
+		"mark": "VI",
+	},
 ]
 
 var panel_index := 0
@@ -28,7 +52,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _render_panel() -> void:
 	var panel: Dictionary = PANELS[panel_index]
-	%Backdrop.color = panel.color
+	%PanelImage.texture = panel.image
 	%PanelMark.text = panel.mark
 	%StoryText.text = panel.text
 	%ProgressLabel.text = "%d / %d" % [panel_index + 1, PANELS.size()]
@@ -53,4 +77,3 @@ func _previous_panel() -> void:
 
 func _skip_intro() -> void:
 	SceneRouter.go_to_stage_01()
-

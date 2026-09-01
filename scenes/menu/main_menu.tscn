@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
+[ext_resource type="Texture2D" path="res://assets/sprites/menu/fundo menu.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/sprites/menu/silhueta_menu_spritesheet.png" id="3_silhouette"]
+[ext_resource type="Texture2D" path="res://assets/sprites/menu/logo.png" id="4_logo"]
+[ext_resource type="Texture2D" path="res://assets/sprites/menu/hardcore_subtitulo.png" id="5_subtitle"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -20,6 +24,40 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.035, 0.012, 0.016, 1)
 
+[node name="MenuArt" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Silhouette" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -182.0
+offset_right = 410.0
+offset_bottom = 34.0
+grow_vertical = 2
+texture = ExtResource("3_silhouette")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DarkWash" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.38)
+
 [node name="RedGlow" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 12
@@ -31,6 +69,40 @@ grow_horizontal = 2
 grow_vertical = 0
 color = Color(0.28, 0.015, 0.02, 1)
 
+[node name="Logo" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -174.0
+offset_top = -166.0
+offset_right = 174.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_logo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HardcoreSubtitle" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -54.0
+offset_right = 160.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_subtitle")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Content" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -38,16 +110,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -190.0
-offset_top = -137.0
-offset_right = 190.0
-offset_bottom = 137.0
+offset_left = -164.0
+offset_top = 24.0
+offset_right = 164.0
+offset_bottom = 170.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 7
 alignment = 1
 
 [node name="Title" type="Label" parent="Content"]
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.08, 0.08, 1)
 theme_override_font_sizes/font_size = 30
@@ -55,6 +128,7 @@ text = "BLOOD SLASHER HARDCORE"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="Content"]
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.72, 0.67, 0.67, 1)
 theme_override_font_sizes/font_size = 12
@@ -62,7 +136,7 @@ text = "AVANCE. CORTE. NÃO INTERROMPA O MASSACRE."
 horizontal_alignment = 1
 
 [node name="Spacer" type="Control" parent="Content"]
-custom_minimum_size = Vector2(0, 12)
+custom_minimum_size = Vector2(0, 0)
 layout_mode = 2
 
 [node name="StartButton" type="Button" parent="Content"]
