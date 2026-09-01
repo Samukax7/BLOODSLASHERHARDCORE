@@ -60,6 +60,9 @@ stretch_mode = 6
 
 [node name="Actors" type="Node2D" parent="."]
 
+[node name="Enemies" type="Node2D" parent="."]
+unique_name_in_owner = true
+
 [node name="Chris" type="AnimatedSprite2D" parent="Actors"]
 unique_name_in_owner = true
 position = Vector2(152, 285)
@@ -67,6 +70,7 @@ scale = Vector2(0.82, 0.82)
 
 [node name="ImpSpawn" type="AnimatedSprite2D" parent="Actors"]
 unique_name_in_owner = true
+visible = false
 position = Vector2(366, 240)
 scale = Vector2(0.64, 0.64)
 
@@ -99,6 +103,54 @@ theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 11
 text = "GAMEPLAY TEST"
+
+[node name="HealthFrame" type="ColorRect" parent="."]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 194.0
+offset_bottom = 82.0
+color = Color(0.08, 0.01, 0.01, 0.86)
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 20.0
+offset_top = 68.0
+offset_right = 190.0
+offset_bottom = 78.0
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="."]
+layout_mode = 1
+offset_left = 22.0
+offset_top = 82.0
+offset_right = 188.0
+offset_bottom = 98.0
+theme_override_colors/font_color = Color(0.98, 0.86, 0.72, 0.92)
+theme_override_font_sizes/font_size = 10
+text = "VIDA  •  CHRIS"
+
+[node name="KillCounter" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -164.0
+offset_top = 16.0
+offset_right = -18.0
+offset_bottom = 42.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.95)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 16
+text = "MORTES  000"
+horizontal_alignment = 2
 
 [node name="Placeholder" type="Label" parent="."]
 visible = false
