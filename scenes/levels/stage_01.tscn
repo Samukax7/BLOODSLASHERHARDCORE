@@ -218,6 +218,15 @@ offset_bottom = 54.0
 theme_override_font_sizes/font_size = 24
 text = "→"
 
+[node name="JumpButton" type="Button" parent="TouchControls"]
+custom_minimum_size = Vector2(66, 54)
+layout_mode = 0
+offset_left = 128.0
+offset_right = 194.0
+offset_bottom = 54.0
+theme_override_font_sizes/font_size = 12
+text = "PULAR"
+
 [node name="AttackButton" type="Button" parent="TouchControls"]
 custom_minimum_size = Vector2(104, 54)
 layout_mode = 1
@@ -236,4 +245,5 @@ text = "ATAQUE"
 [connection signal="button_up" from="TouchControls/MoveLeftButton" to="." method="_on_move_left_button_up"]
 [connection signal="button_down" from="TouchControls/MoveRightButton" to="." method="_on_move_right_button_down"]
 [connection signal="button_up" from="TouchControls/MoveRightButton" to="." method="_on_move_right_button_up"]
+[connection signal="button_down" from="TouchControls/JumpButton" to="." method="_on_jump_button_down"]
 [connection signal="button_down" from="TouchControls/AttackButton" to="." method="_on_attack_button_down"]
