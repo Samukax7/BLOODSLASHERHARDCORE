@@ -4,6 +4,10 @@ const CHRIS_IDLE := preload("res://assets/sprites/Chris/idle/idle_spritesheet.pn
 const CHRIS_ENTRY := preload("res://assets/sprites/Chris/intro/chris_entry_10f_style_locked_v4_preview.png")
 const CHRIS_RUN := preload("res://assets/sprites/Chris/run/spritesheet run.png")
 const CHRIS_ATTACK := preload("res://assets/sprites/Chris/atack basico/atack basico spritesheet.png")
+const CHRIS_HURT := preload("res://assets/sprites/Chris/hurt/chris_hurt_4f_style_locked_preview.png")
+const CHRIS_DEATH := preload("res://assets/sprites/Chris/death/chris_death_12f_style_locked_v2_preview.png")
+const CHRIS_JUMP := preload("res://assets/sprites/Chris/jump/jump spritesheet.png")
+const CHRIS_JUMP_ATTACK := preload("res://assets/sprites/Chris/jump atack/jump atack spritesheet.png")
 const IMP_SPAWN := preload("res://assets/sprites/enemy/demonio vermelho/imp_spawn_spritesheet.png")
 const IMP_IDLE := preload("res://assets/sprites/enemy/demonio vermelho/imp_idle_spritesheet.png")
 const PURSUER := preload("res://assets/sprites/enemy/perseguidor/dog_persuit_static.png")
@@ -14,11 +18,19 @@ const IMP_IDLE_FRAME := Vector2i(128, 128)
 const GROUND_Y := 290.0
 const PLAYER_MIN_X := 64.0
 const PLAYER_MAX_X := 565.0
+const PLAYER_GROUND_Y := 285.0
+const JUMP_VELOCITY := -285.0
+const GRAVITY := 680.0
 const IMP_SCALE := 0.205
 
 var entering := true
 var attacking := false
+var jumping := false
+var hurt := false
+var dead := false
 var attack_time := 0.0
+var hurt_time := 0.0
+var vertical_velocity := 0.0
 var touch_direction := 0.0
 var health := 100.0
 var kills := 0
@@ -40,6 +52,12 @@ func _process(delta: float) -> void:
 			attacking = false
 	if entering:
 		return
+	if dead:
+		return
+	if hurt:
+		hurt_time -= delta
+		if hurt_time <= 0.0:
+			hurt = false
 	_move_player(delta)
 	_spawn_next(delta)
 	_update_enemies(delta)
@@ -48,6 +66,8 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		SceneRouter.go_to_main_menu()
+	elif event.is_action_pressed("jump"):
+		_jump()
 	elif event.is_action_pressed("attack_light"):
 		_attack()
 
@@ -58,6 +78,10 @@ func _setup_chris() -> void:
 	_add_animation(frames, "idle", CHRIS_IDLE, CHRIS_FRAME, 6, 7.0, true)
 	_add_animation(frames, "run", CHRIS_RUN, CHRIS_FRAME, 8, 10.0, true)
 	_add_animation(frames, "attack", CHRIS_ATTACK, Vector2i(252, 126), 8, 12.0, false)
+	_add_animation(frames, "hurt", CHRIS_HURT, Vector2i(111, 126), 4, 12.0, false)
+	_add_animation(frames, "death", CHRIS_DEATH, Vector2i(73, 112), 12, 10.0, false)
+	_add_animation(frames, "jump", CHRIS_JUMP, Vector2i(109, 112), 6, 12.0, false)
+	_add_animation(frames, "jump_attack", CHRIS_JUMP_ATTACK, Vector2i(109, 112), 6, 12.0, false)
 	%Chris.sprite_frames = frames
 	%Chris.animation_finished.connect(_on_chris_animation_finished)
 	%Chris.play(&"entry")
@@ -78,17 +102,49 @@ func _on_chris_animation_finished() -> void:
 	if %Chris.animation == &"entry":
 		entering = false
 		%Chris.play(&"idle")
+	elif %Chris.animation == &"hurt" and not dead:
+		hurt = false
+	elif %Chris.animation == &"jump_attack" and jumping and not dead:
+		%Chris.play(&"jump")
 
 
 func _move_player(delta: float) -> void:
 	var direction := Input.get_axis("move_left", "move_right")
 	if is_zero_approx(direction):
 		direction = touch_direction
-	if not is_zero_approx(direction):
+	if not is_zero_approx(direction) and not hurt:
 		%Chris.position.x = clampf(%Chris.position.x + direction * 115.0 * delta, PLAYER_MIN_X, PLAYER_MAX_X)
 		%Chris.flip_h = direction < 0.0
+	_update_jump(delta)
+	if hurt:
+		return
+	if jumping:
+		if not attacking:
+			%Chris.play(&"jump")
+		return
 	if not attacking:
 		%Chris.play(&"idle" if is_zero_approx(direction) else &"run")
+
+
+func _jump() -> void:
+	if entering or dead or hurt or jumping:
+		return
+	jumping = true
+	vertical_velocity = JUMP_VELOCITY
+	%Chris.play(&"jump")
+
+
+func _update_jump(delta: float) -> void:
+	if not jumping:
+		return
+	vertical_velocity += GRAVITY * delta
+	%Chris.position.y += vertical_velocity * delta
+	if %Chris.position.y >= PLAYER_GROUND_Y:
+		%Chris.position.y = PLAYER_GROUND_Y
+		vertical_velocity = 0.0
+		jumping = false
+		if not attacking:
+			%Chris.play(&"idle")
 
 
 func _spawn_next(delta: float) -> void:
@@ -165,11 +221,11 @@ func _update_enemies(delta: float) -> void:
 
 
 func _attack() -> void:
-	if entering or attacking:
+	if entering or attacking or hurt or dead:
 		return
 	attacking = true
-	attack_time = 8.0 / 12.0
-	%Chris.play(&"attack")
+	attack_time = 6.0 / 12.0 if jumping else 8.0 / 12.0
+	%Chris.play(&"jump_attack" if jumping else &"attack")
 	for enemy in enemies.duplicate():
 		if enemy.spawn <= 0.0 and absf(enemy.actor.position.x - %Chris.position.x) <= 118.0:
 			enemy.health -= 10.0
@@ -200,13 +256,25 @@ func _kill(enemy: Dictionary) -> void:
 
 
 func _damage_player(amount: float) -> void:
+	if dead:
+		return
 	health = maxf(0.0, health - amount)
 	var tween := create_tween()
 	tween.tween_property(%HealthBar, "value", health, 0.18)
 	%Chris.modulate = Color(1, 0.25, 0.25, 1)
 	tween.parallel().tween_property(%Chris, "modulate", Color.WHITE, 0.18)
 	if health <= 0.0:
+		dead = true
+		attacking = false
+		jumping = false
+		vertical_velocity = 0.0
+		%Chris.position.y = PLAYER_GROUND_Y
+		%Chris.play(&"death")
 		%GameplayStatus.text = "CHRIS CAIU. Use RESULTADO para encerrar este teste."
+	else:
+		hurt = true
+		hurt_time = 4.0 / 12.0
+		%Chris.play(&"hurt")
 
 
 func _refresh_hud() -> void:
@@ -234,3 +302,6 @@ func _on_move_right_button_up() -> void:
 
 func _on_attack_button_down() -> void:
 	_attack()
+
+func _on_jump_button_down() -> void:
+	_jump()
