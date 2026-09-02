@@ -34,6 +34,8 @@ var vertical_velocity := 0.0
 var touch_direction := 0.0
 var health := 100.0
 var kills := 0
+var elapsed_time := 0.0
+var run_finished := false
 var spawn_time := 1.2
 var spawn_index := 0
 var enemies: Array[Dictionary] = []
@@ -54,6 +56,7 @@ func _process(delta: float) -> void:
 		return
 	if dead:
 		return
+	elapsed_time += delta
 	if hurt:
 		hurt_time -= delta
 		if hurt_time <= 0.0:
@@ -106,6 +109,8 @@ func _on_chris_animation_finished() -> void:
 		hurt = false
 	elif %Chris.animation == &"jump_attack" and jumping and not dead:
 		%Chris.play(&"jump")
+	elif %Chris.animation == &"death":
+		_finish_run()
 
 
 func _move_player(delta: float) -> void:
@@ -208,6 +213,8 @@ func _update_enemies(delta: float) -> void:
 		enemy.cooldown = maxf(0.0, enemy.cooldown - delta)
 		var distance := absf(enemy.actor.position.x - %Chris.position.x)
 		var direction := signf(%Chris.position.x - enemy.actor.position.x)
+		# As artes-base apontam para a esquerda; espelha apenas quando o Chris está à direita.
+		enemy.sprite.flip_h = direction > 0.0
 		var speed: float = enemy.speed
 		if enemy.type == "pursuer" and distance < 180.0:
 			speed *= 2.35
@@ -283,8 +290,20 @@ func _refresh_hud() -> void:
 
 
 func _on_finish_button_pressed() -> void:
-	GameState.run_stats = {"time": "00:00", "kills": kills, "max_combo": 0, "rages": 0, "damage_received": int(100 - health), "rank": "—"}
+	_finish_run()
+
+
+func _finish_run() -> void:
+	if run_finished:
+		return
+	run_finished = true
+	GameState.run_stats = {"time": _format_time(elapsed_time), "kills": kills, "max_combo": 0, "rages": 0, "damage_received": int(100 - health), "rank": "—"}
 	SceneRouter.go_to_results()
+
+
+func _format_time(total_seconds: float) -> String:
+	var whole_seconds := int(floorf(total_seconds))
+	return "%02d:%02d" % [whole_seconds / 60, whole_seconds % 60]
 
 func _on_move_left_button_down() -> void:
 	touch_direction = -1.0
