@@ -1,0 +1,257 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
+[ext_resource type="Texture2D" path="res://assets/sprites/menu/fundo menu.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/sprites/menu/silhueta_menu_spritesheet.png" id="3_silhouette"]
+[ext_resource type="Texture2D" path="res://assets/sprites/menu/logo.png" id="4_logo"]
+[ext_resource type="Texture2D" path="res://assets/sprites/menu/hardcore_subtitulo.png" id="5_subtitle"]
+[ext_resource type="Texture2D" path="res://assets/sprites/menu_reference.png" id="6_menu_concept"]
+[ext_resource type="Texture2D" path="res://assets/sprites/button_release.png" id="7_button_normal"]
+[ext_resource type="Texture2D" path="res://assets/sprites/button_pressed.png" id="8_button_pressed"]
+[ext_resource type="Texture2D" path="res://assets/sprites/button_selection.png" id="9_button_focus"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_silhouette"]
+atlas = ExtResource("3_silhouette")
+region = Rect2(0, 0, 362, 508)
+
+[sub_resource type="StyleBoxTexture" id="StyleBox_button_normal"]
+texture = ExtResource("7_button_normal")
+texture_margin_left = 48.0
+texture_margin_top = 16.0
+texture_margin_right = 48.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBox_button_pressed"]
+texture = ExtResource("8_button_pressed")
+texture_margin_left = 48.0
+texture_margin_top = 16.0
+texture_margin_right = 48.0
+texture_margin_bottom = 16.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBox_button_focus"]
+texture = ExtResource("9_button_focus")
+texture_margin_left = 48.0
+texture_margin_top = 16.0
+texture_margin_right = 48.0
+texture_margin_bottom = 16.0
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="MenuArt" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_menu_concept")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Silhouette" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 446.0
+offset_top = 164.0
+offset_right = 628.0
+offset_bottom = 360.0
+texture = SubResource("AtlasTexture_silhouette")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DarkWash" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.12)
+
+[node name="RedGlow" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -72.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.28, 0.015, 0.02, 1)
+
+[node name="Logo" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -206.0
+offset_top = -174.0
+offset_right = 206.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_logo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HardcoreSubtitle" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -42.0
+offset_right = 150.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_subtitle")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Content" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 0
+anchor_left = 0.5
+anchor_top = 0.0
+anchor_right = 0.5
+anchor_bottom = 0.0
+offset_left = -190.0
+offset_top = 246.0
+offset_right = 190.0
+offset_bottom = 292.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Title" type="Label" parent="Content"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.08, 0.08, 1)
+theme_override_font_sizes/font_size = 30
+text = "BLOOD SLASHER HARDCORE"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Content"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.67, 0.67, 1)
+theme_override_font_sizes/font_size = 12
+text = "AVANCE. CORTE. NÃO INTERROMPA O MASSACRE."
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Content"]
+custom_minimum_size = Vector2(0, 0)
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="Content"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.82, 0.72, 1)
+theme_override_colors/font_focus_color = Color(1, 0.93, 0.82, 1)
+theme_override_colors/font_hover_color = Color(1, 0.93, 0.82, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBox_button_normal")
+theme_override_styles/hover = SubResource("StyleBox_button_focus")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
+text = "JOGAR"
+
+[node name="ControlsButton" type="Button" parent="Content"]
+custom_minimum_size = Vector2(120, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.82, 0.72, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBox_button_normal")
+theme_override_styles/hover = SubResource("StyleBox_button_focus")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
+text = "CONTROLES"
+
+[node name="OptionsButton" type="Button" parent="Content"]
+visible = false
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.82, 0.72, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBox_button_normal")
+theme_override_styles/hover = SubResource("StyleBox_button_focus")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
+text = "OPÇÕES"
+
+[node name="CreditsButton" type="Button" parent="Content"]
+custom_minimum_size = Vector2(120, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.82, 0.72, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBox_button_normal")
+theme_override_styles/hover = SubResource("StyleBox_button_focus")
+theme_override_styles/pressed = SubResource("StyleBox_button_pressed")
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
+text = "CRÉDITOS"
+
+[node name="StatusLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -62.0
+offset_right = -20.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.85, 0.62, 0.62, 1)
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
+
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -112.0
+offset_top = -28.0
+offset_right = -12.0
+offset_bottom = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.55, 0.48, 0.48, 1)
+theme_override_font_sizes/font_size = 10
+text = "DEMO WEB 0.1"
+horizontal_alignment = 2
+
+[connection signal="pressed" from="Content/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Content/ControlsButton" to="." method="_on_controls_button_pressed"]
+[connection signal="pressed" from="Content/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="Content/CreditsButton" to="." method="_on_credits_button_pressed"]

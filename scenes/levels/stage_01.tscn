@@ -1,0 +1,249 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/stage_01_placeholder.gd" id="1_stage"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background/fundo_ceu.png" id="2_sky"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background/paralax mid bilds.png" id="3_mid"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background/chão.png" id="4_ground"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Chris/idle/idle_spritesheet.png" id="5_chris_idle"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Chris/run/spritesheet run.png" id="6_chris_run"]
+[ext_resource type="Texture2D" path="res://assets/sprites/Chris/atack basico/atack basico spritesheet.png" id="7_chris_attack"]
+[ext_resource type="Texture2D" path="res://assets/sprites/enemy/demonio vermelho/imp_spawn_spritesheet.png" id="8_imp_spawn"]
+[ext_resource type="Texture2D" path="res://assets/sprites/background completo.png" id="9_stage_concept"]
+
+[node name="Stage01" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_stage")
+
+[node name="Sky" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_stage_concept")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="MidParallax" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -250.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("3_mid")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Ground" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -104.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("4_ground")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Actors" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Chris" type="AnimatedSprite2D" parent="Actors"]
+unique_name_in_owner = true
+position = Vector2(152, 285)
+scale = Vector2(0.82, 0.82)
+
+[node name="ImpSpawn" type="AnimatedSprite2D" parent="Actors"]
+unique_name_in_owner = true
+visible = false
+position = Vector2(366, 240)
+scale = Vector2(0.64, 0.64)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 24.0
+offset_bottom = 80.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.95, 0.84, 0.72, 0.88)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.86)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+text = "STAGE 01 — RODOVIA DOS CONDENADOS"
+horizontal_alignment = 1
+
+[node name="GameplayStatus" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 316.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(0.98, 0.86, 0.72, 0.92)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 11
+text = "GAMEPLAY TEST"
+
+[node name="HealthFrame" type="ColorRect" parent="."]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 194.0
+offset_bottom = 82.0
+color = Color(0.08, 0.01, 0.01, 0.86)
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+offset_left = 20.0
+offset_top = 68.0
+offset_right = 190.0
+offset_bottom = 78.0
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="."]
+layout_mode = 1
+offset_left = 22.0
+offset_top = 82.0
+offset_right = 188.0
+offset_bottom = 98.0
+theme_override_colors/font_color = Color(0.98, 0.86, 0.72, 0.92)
+theme_override_font_sizes/font_size = 10
+text = "VIDA  •  CHRIS"
+
+[node name="KillCounter" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -164.0
+offset_top = 16.0
+offset_right = -18.0
+offset_bottom = 42.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.95)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 16
+text = "MORTES  000"
+horizontal_alignment = 2
+
+[node name="Placeholder" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -230.0
+offset_top = -48.0
+offset_right = 230.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9, 0.72, 0.65, 1)
+theme_override_font_sizes/font_size = 17
+text = "ARENA EM CONSTRUÇÃO\n\nO combate desperta no Milestone 2."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FinishButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 406.0
+offset_top = -60.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "RESULTADO"
+
+[node name="TouchControls" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_right = 1.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -76.0
+offset_right = -16.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="MoveLeftButton" type="Button" parent="TouchControls"]
+custom_minimum_size = Vector2(58, 54)
+layout_mode = 0
+offset_right = 58.0
+offset_bottom = 54.0
+theme_override_font_sizes/font_size = 24
+text = "←"
+
+[node name="MoveRightButton" type="Button" parent="TouchControls"]
+custom_minimum_size = Vector2(58, 54)
+layout_mode = 0
+offset_left = 64.0
+offset_right = 122.0
+offset_bottom = 54.0
+theme_override_font_sizes/font_size = 24
+text = "→"
+
+[node name="JumpButton" type="Button" parent="TouchControls"]
+custom_minimum_size = Vector2(66, 54)
+layout_mode = 0
+offset_left = 128.0
+offset_right = 194.0
+offset_bottom = 54.0
+theme_override_font_sizes/font_size = 12
+text = "PULAR"
+
+[node name="AttackButton" type="Button" parent="TouchControls"]
+custom_minimum_size = Vector2(104, 54)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -104.0
+offset_bottom = 54.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 0.82, 0.72, 1)
+theme_override_font_sizes/font_size = 14
+text = "ATAQUE"
+
+[connection signal="pressed" from="FinishButton" to="." method="_on_finish_button_pressed"]
+[connection signal="button_down" from="TouchControls/MoveLeftButton" to="." method="_on_move_left_button_down"]
+[connection signal="button_up" from="TouchControls/MoveLeftButton" to="." method="_on_move_left_button_up"]
+[connection signal="button_down" from="TouchControls/MoveRightButton" to="." method="_on_move_right_button_down"]
+[connection signal="button_up" from="TouchControls/MoveRightButton" to="." method="_on_move_right_button_up"]
+[connection signal="button_down" from="TouchControls/JumpButton" to="." method="_on_jump_button_down"]
+[connection signal="button_down" from="TouchControls/AttackButton" to="." method="_on_attack_button_down"]

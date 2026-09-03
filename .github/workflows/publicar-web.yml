@@ -1,0 +1,58 @@
+name: Publicar teste Web
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: blood-slasher-web
+  cancel-in-progress: true
+
+jobs:
+  export-and-publish:
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.4
+
+    steps:
+      - name: Baixar projeto
+        run: |
+          git clone --depth 1 "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" project
+          cd project
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Instalar templates Web da Godot
+        run: |
+          export_template_dir="/github/home/.local/share/godot/export_templates/4.4.stable"
+          mkdir -p "$export_template_dir" /tmp/godot-templates
+          wget -q "https://github.com/godotengine/godot/releases/download/4.4-stable/Godot_v4.4-stable_export_templates.tpz" -O /tmp/godot-templates.tpz
+          unzip -q /tmp/godot-templates.tpz -d /tmp/godot-templates
+          cp /tmp/godot-templates/templates/* "$export_template_dir/"
+
+      - name: Exportar Web
+        run: |
+          cd project
+          mkdir -p export/web /tmp/blood-slasher-web
+          godot --headless --export-release "Web" export/web/index.html
+          cp -R export/web/. /tmp/blood-slasher-web/
+
+      - name: Atualizar site de teste
+        run: |
+          cd project
+          git fetch origin gh-pages || true
+          git checkout --orphan gh-pages
+          git clean -fdx
+          cp -R /tmp/blood-slasher-web/. .
+          touch .nojekyll
+          git add --all
+          git commit -m "Atualizar teste Web" || exit 0
+          git push --force origin gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
