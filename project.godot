@@ -13,6 +13,7 @@ config_version=5
 config/name="BLOOD SLASHER HARDCORE"
 config/description="Hack and slash 2D de hordas — Demo Web"
 config/version="0.1.0"
+config/icon="res://assets/project_icon.png"
 run/main_scene="res://scenes/boot/boot.tscn"
 config/features=PackedStringArray("4.7")
 
