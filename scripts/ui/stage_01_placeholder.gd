@@ -25,6 +25,18 @@ const IMP_SCALE := 0.205
 
 var entering := true
 var attacking := false
+var heavy_attacking := false
+var dashing := false
+var invulnerable := false
+var rage_active := false
+var rage_meter := 0.0
+var rage_time := 0.0
+var combo := 0
+var max_combo := 0
+var combo_time := 0.0
+var rages_used := 0
+var damage_received := 0
+var light_step := 0
 var jumping := false
 var hurt := false
 var dead := false
@@ -44,6 +56,7 @@ var enemies: Array[Dictionary] = []
 func _ready() -> void:
 	_setup_chris()
 	%HealthBar.value = health
+	_create_combat_hud()
 	_refresh_hud()
 
 
@@ -57,6 +70,7 @@ func _process(delta: float) -> void:
 	if dead:
 		return
 	elapsed_time += delta
+	_update_combat_state(delta)
 	if hurt:
 		hurt_time -= delta
 		if hurt_time <= 0.0:
@@ -73,6 +87,37 @@ func _unhandled_input(event: InputEvent) -> void:
 		_jump()
 	elif event.is_action_pressed("attack_light"):
 		_attack()
+	elif event.is_action_pressed("attack_heavy"):
+		_heavy_attack()
+	elif event.is_action_pressed("dash"):
+		_dash()
+	elif event.is_action_pressed("rage"):
+		_activate_rage()
+
+
+func _create_combat_hud() -> void:
+	var combat_label := Label.new()
+	combat_label.name = "CombatLabel"
+	combat_label.position = Vector2(16, 104)
+	combat_label.add_theme_font_size_override("font_size", 12)
+	combat_label.add_theme_color_override("font_color", Color(1.0, 0.72, 0.35))
+	add_child(combat_label)
+	combat_label.set_meta("runtime_hud", true)
+
+
+func _update_combat_state(delta: float) -> void:
+	if combo_time > 0.0:
+		combo_time -= delta
+		if combo_time <= 0.0:
+			combo = 0
+	if rage_active:
+		rage_time -= delta
+		if rage_time <= 0.0:
+			rage_active = false
+			%Chris.modulate = Color.WHITE
+		if is_instance_valid(get_node_or_null("CombatLabel")):
+			get_node("CombatLabel").modulate = Color(1.0, 0.35, 0.25) if rage_active else Color.WHITE
+	_refresh_hud()
 
 
 func _setup_chris() -> void:
@@ -231,16 +276,67 @@ func _attack() -> void:
 	if entering or attacking or hurt or dead:
 		return
 	attacking = true
+	heavy_attacking = false
 	attack_time = 6.0 / 12.0 if jumping else 8.0 / 12.0
+	light_step = (light_step + 1) % 3
 	%Chris.play(&"jump_attack" if jumping else &"attack")
 	for enemy in enemies.duplicate():
 		if enemy.spawn <= 0.0 and absf(enemy.actor.position.x - %Chris.position.x) <= 118.0:
-			enemy.health -= 10.0
-			enemy.hit = 0.18
-			enemy.sprite.modulate = Color(1, 0.12, 0.12, 1)
-			enemy.flash.color = Color(1, 0.04, 0.02, 0.72)
-			if enemy.health <= 0.0:
-				_kill(enemy)
+			_hit_enemy(enemy, 10.0 if not rage_active else 18.0)
+
+
+func _heavy_attack() -> void:
+	if entering or attacking or hurt or dead or dashing:
+		return
+	attacking = true
+	heavy_attacking = true
+	attack_time = 0.72
+	%Chris.play(&"attack")
+	for enemy in enemies.duplicate():
+		if enemy.spawn <= 0.0 and absf(enemy.actor.position.x - %Chris.position.x) <= 142.0:
+			_hit_enemy(enemy, 24.0 if not rage_active else 40.0)
+
+
+func _hit_enemy(enemy: Dictionary, amount: float) -> void:
+	enemy.health -= amount
+	enemy.hit = 0.18
+	enemy.sprite.modulate = Color(1, 0.12, 0.12, 1)
+	enemy.flash.color = Color(1, 0.04, 0.02, 0.72)
+	if enemy.health <= 0.0:
+		_kill(enemy)
+	else:
+		_gain_combat(4.0)
+
+
+func _gain_combat(amount: float) -> void:
+	rage_meter = minf(100.0, rage_meter + amount)
+	combo += 1
+	combo_time = 1.7
+	max_combo = maxi(max_combo, combo)
+
+
+func _dash() -> void:
+	if entering or dead or hurt or jumping or dashing:
+		return
+	dashing = true
+	invulnerable = true
+	var direction := Input.get_axis("move_left", "move_right")
+	if is_zero_approx(direction):
+		direction = -1.0 if %Chris.flip_h else 1.0
+	var tween := create_tween()
+	tween.tween_property(%Chris, "position:x", clampf(%Chris.position.x + direction * 82.0, PLAYER_MIN_X, PLAYER_MAX_X), 0.18)
+	tween.finished.connect(func(): dashing = false; invulnerable = false)
+
+
+func _activate_rage() -> void:
+	if rage_meter < 100.0 or rage_active or dead:
+		return
+	rage_meter = 0.0
+	rage_active = true
+	rage_time = 8.0
+	rages_used += 1
+	%Chris.modulate = Color(1.0, 0.48, 0.35)
+	%GameplayStatus.text = "SAI DA FRENTE, SATANÁS!"
 
 
 func _flash_enemy(enemy: Dictionary, delta: float) -> void:
@@ -255,6 +351,7 @@ func _flash_enemy(enemy: Dictionary, delta: float) -> void:
 func _kill(enemy: Dictionary) -> void:
 	enemies.erase(enemy)
 	kills += 1
+	_gain_combat(12.0)
 	_refresh_hud()
 	var tween := create_tween()
 	tween.tween_property(enemy.actor, "modulate:a", 0.0, 0.28)
@@ -263,9 +360,12 @@ func _kill(enemy: Dictionary) -> void:
 
 
 func _damage_player(amount: float) -> void:
-	if dead:
+	if dead or invulnerable:
 		return
 	health = maxf(0.0, health - amount)
+	damage_received += int(amount)
+	rage_meter = maxf(0.0, rage_meter - 8.0)
+	combo = 0
 	var tween := create_tween()
 	tween.tween_property(%HealthBar, "value", health, 0.18)
 	%Chris.modulate = Color(1, 0.25, 0.25, 1)
@@ -286,7 +386,11 @@ func _damage_player(amount: float) -> void:
 
 func _refresh_hud() -> void:
 	%KillCounter.text = "MORTES  %03d" % kills
-	%GameplayStatus.text = "TESTE DE COMBATE  |  DIFICULDADE %d\nATAQUE perto do inimigo. Vermelho = acerto." % (1 + int(kills / 5))
+	if not rage_active and not dead:
+		%GameplayStatus.text = "J ATAQUE  |  K PESADO  |  SHIFT ESQUIVA  |  R FÚRIA"
+	var label := get_node_or_null("CombatLabel")
+	if label:
+		label.text = "FÚRIA %03d%%   COMBO x%02d%s" % [int(rage_meter), combo, "  [ATIVA]" if rage_active else ""]
 
 
 func _on_finish_button_pressed() -> void:
@@ -297,7 +401,7 @@ func _finish_run() -> void:
 	if run_finished:
 		return
 	run_finished = true
-	GameState.run_stats = {"time": _format_time(elapsed_time), "kills": kills, "max_combo": 0, "rages": 0, "damage_received": int(100 - health), "rank": "—"}
+	GameState.run_stats = {"time": _format_time(elapsed_time), "kills": kills, "max_combo": max_combo, "rages": rages_used, "damage_received": damage_received, "rank": "A" if max_combo >= 8 else "B"}
 	SceneRouter.go_to_results()
 
 
